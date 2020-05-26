@@ -1,0 +1,21 @@
+version: "2.3"
+
+services:
+    ros:
+        build:
+            context: .
+            args:
+                HOST_USER: ${HOST_USER?HOST_USER env var not set! Source user_uid.sh}
+                HOST_UID: ${HOST_UID?HOST_UID env var not set! Source user_uid.sh}
+        user: ${HOST_USER}
+        volumes:
+            - $HOME/.Xauthority:/home/${HOST_USER}/.Xauthority
+            - ./home:/home/${HOST_USER}
+        devices:
+            - /dev/dri:/dev/dri
+        environment:
+            DISPLAY: $DISPLAY
+        network_mode: "host"
+        privileged: true
+        stdin_open: true
+        tty: true
